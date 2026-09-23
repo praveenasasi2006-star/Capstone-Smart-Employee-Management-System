@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Smart Employee Management System</title>
+
+    <link rel="stylesheet" href="css/dashboard.css">
+</head>
+
+<body>
+
+    <header class="navbar">
+        <div class="logo">✨ SMART EMPLOYEE</div>
+
+        <div class="nav-right">
+            <span class="admin">👤 Admin</span>
+            <button class="logout" onclick="logout()">Logout</button>
+        </div>
+    </header>
+
+    <section class="hero">
+        <h1>Welcome to <span>Employee Management</span></h1>
+        <p>Manage your employees easily, quickly and efficiently.</p>
+    </section>
+
+    <section class="stats">
+
+        <div class="stat-card">
+            <div class="icon">👥</div>
+            <h2 id="totalEmployees">0</h2>
+            <p>Total Employees</p>
+        </div>
+
+        <div class="stat-card">
+            <div class="icon">💼</div>
+            <h2>5</h2>
+            <p>Departments</p>
+        </div>
+
+        <div class="stat-card">
+            <div class="icon">📈</div>
+            <h2 id="activeEmployees">0</h2>
+            <p>Active Employees</p>
+        </div>
+
+        <div class="stat-card">
+            <div class="icon">⭐</div>
+            <h2 id="newEmployees">0</h2>
+            <p>New Employees</p>
+        </div>
+
+    </section>
+
+    <h2 class="section-title">Employee Management</h2>
+
+    <section class="features">
+
+        <div class="feature-card">
+            <div class="big-icon">➕</div>
+            <h3>Add Employee</h3>
+            <p>Add new employee details to the system.</p>
+            <button class="btn" onclick="location.href='add-employee.html'">
+                Add Employee
+            </button>
+        </div>
+
+        <div class="feature-card">
+            <div class="big-icon">👁️</div>
+            <h3>View Employees</h3>
+            <p>View all employee information.</p>
+            <button class="btn" onclick="location.href='view-employee.html'">
+                View Employees
+            </button>
+        </div>
+
+        <div class="feature-card">
+            <div class="big-icon">✏️</div>
+            <h3>Edit Employee</h3>
+            <p>Update employee information.</p>
+            <button class="btn" onclick="location.href='edit-employee.html'">
+                Edit Employee
+            </button>
+        </div>
+
+        <div class="feature-card">
+            <div class="big-icon">🗑️</div>
+            <h3>Delete Employee</h3>
+            <p>Remove employee records.</p>
+            <button class="btn" onclick="location.href='delete-employee.html'">
+                Delete Employee
+            </button>
+        </div>
+
+        <div class="feature-card">
+            <div class="big-icon">🔍</div>
+            <h3>Search Employee</h3>
+            <p>Quickly find employee information.</p>
+            <button class="btn" onclick="location.href='view-employee.html'">
+                Search
+            </button>
+        </div>
+
+        <div class="feature-card">
+            <div class="big-icon">📊</div>
+            <h3>Employee Reports</h3>
+            <p>View employee statistics and reports.</p>
+            <button class="btn" onclick="location.href='employee-report.html'">
+                View Report
+            </button>
+        </div>
+
+    </section>
+
+    <footer>
+        © 2026 Smart Employee Management System | Capstone Project
+    </footer>
+
+
+    <script>
+
+        // Load employee count from backend
+        async function loadEmployeeCount() {
+
+            try {
+
+                const response = await fetch(
+                    "http://localhost:8080/api/employees"
+                );
+
+                if (!response.ok) {
+                    throw new Error("Backend error");
+                }
+
+                const employees = await response.json();
+
+                document.getElementById("totalEmployees").innerText =
+                    employees.length;
+
+                document.getElementById("activeEmployees").innerText =
+                    employees.length;
+
+                document.getElementById("newEmployees").innerText =
+                    employees.length;
+
+            } catch (error) {
+
+                console.error("Backend connection failed:", error);
+
+                document.getElementById("totalEmployees").innerText = "0";
+            }
+        }
+
+
+        function logout() {
+            window.location.href = "login.html";
+        }
+
+
+        // Run when home page opens
+        loadEmployeeCount();
+
+    </script>
+
+</body>
+
+</html>
