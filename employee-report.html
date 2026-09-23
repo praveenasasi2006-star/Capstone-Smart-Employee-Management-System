@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee Reports</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            padding: 40px 20px;
+            background: linear-gradient(135deg, #e0f2ff, #f8eaff);
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: auto;
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #6c3cff;
+            margin-bottom: 25px;
+        }
+
+        .total {
+            text-align: center;
+            font-size: 22px;
+            font-weight: bold;
+            margin-bottom: 25px;
+        }
+
+        .total span {
+            color: #6c3cff;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            padding: 12px;
+            border-bottom: 1px solid #ddd;
+            text-align: left;
+        }
+
+        th {
+            background: #6c3cff;
+            color: white;
+        }
+
+        .empty {
+            text-align: center;
+            padding: 25px;
+            color: #777;
+        }
+
+        .back {
+            display: block;
+            margin: 25px auto 0;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 25px;
+            background: #6c3cff;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        @media (max-width: 700px) {
+            .container {
+                overflow-x: auto;
+            }
+
+            table {
+                min-width: 700px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+
+        <h1>📊 Employee Report</h1>
+
+        <div class="total">
+            Total Employees: <span id="total">0</span>
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Department</th>
+                    <th>Salary</th>
+                </tr>
+            </thead>
+
+            <tbody id="reportTable"></tbody>
+        </table>
+
+        <button class="back" onclick="location.href='home.html'">
+            Back to Dashboard
+        </button>
+
+    </div>
+
+    <script>
+        let employees =
+            JSON.parse(localStorage.getItem("employees")) || [];
+
+        document.getElementById("total").textContent = employees.length;
+
+        let table = document.getElementById("reportTable");
+
+        if (employees.length === 0) {
+
+            table.innerHTML =
+                '<tr><td colspan="6" class="empty">No employees available</td></tr>';
+
+        } else {
+
+            employees.forEach(function (emp) {
+
+                table.innerHTML += `
+                <tr>
+                    <td>${emp.id}</td>
+                    <td>${emp.name}</td>
+                    <td>${emp.email}</td>
+                    <td>${emp.phone}</td>
+                    <td>${emp.department}</td>
+                    <td>${emp.salary}</td>
+                </tr>
+            `;
+
+            });
+        }
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Employees</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            margin: 0;
+            padding: 30px;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #e0f2ff, #f8eaff);
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: auto;
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #6c3cff;
+            margin-bottom: 25px;
+        }
+
+        .top {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        input {
+            flex: 1;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+        }
+
+        button {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 20px;
+            background: #6c3cff;
+            color: white;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            padding: 12px;
+            border-bottom: 1px solid #ddd;
+            text-align: left;
+        }
+
+        th {
+            background: #6c3cff;
+            color: white;
+        }
+
+        .empty,
+        .error {
+            text-align: center;
+            padding: 25px;
+        }
+
+        .empty {
+            color: #777;
+        }
+
+        .error {
+            color: red;
+        }
+
+        @media (max-width: 700px) {
+            body {
+                padding: 10px;
+            }
+
+            .container {
+                padding: 15px;
+                overflow-x: auto;
+            }
+
+            table {
+                min-width: 800px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+
+        <h1>👥 Employee List</h1>
+
+        <div class="top">
+            <input type="text" id="search" placeholder="Search by ID or Name..." onkeyup="searchEmployee()">
+
+            <button onclick="location.href='home.html'">Back</button>
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Department</th>
+                    <th>Designation</th>
+                    <th>Salary</th>
+                    <th>Joining Date</th>
+                </tr>
+            </thead>
+
+            <tbody id="employeeTable"></tbody>
+        </table>
+
+    </div>
+
+    <script>
+
+        let employees = [];
+
+        // Get employees from backend
+        async function loadEmployees() {
+
+            try {
+
+                const response = await fetch("http://localhost:8080/api/employees");
+
+                if (!response.ok) {
+                    throw new Error("Failed to load employees");
+                }
+
+                employees = await response.json();
+
+                displayEmployees(employees);
+
+            } catch (error) {
+
+                document.getElementById("employeeTable").innerHTML =
+                    '<tr><td colspan="8" class="error">Backend connection failed!</td></tr>';
+
+                console.error(error);
+            }
+        }
+
+
+        // Display employees
+        function displayEmployees(list) {
+
+            const table = document.getElementById("employeeTable");
+
+            if (list.length === 0) {
+
+                table.innerHTML =
+                    '<tr><td colspan="8" class="empty">No employees found</td></tr>';
+
+                return;
+            }
+
+            table.innerHTML = "";
+
+            list.forEach(function (emp) {
+
+                table.innerHTML += `
+                    <tr>
+                        <td>${emp.id}</td>
+                        <td>${emp.name}</td>
+                        <td>${emp.email}</td>
+                        <td>${emp.phone}</td>
+                        <td>${emp.department}</td>
+                        <td>${emp.designation}</td>
+                        <td>${emp.salary}</td>
+                        <td>${emp.joiningDate}</td>
+                    </tr>
+                `;
+
+            });
+        }
+
+
+        // Search employee
+        function searchEmployee() {
+
+            const value =
+                document.getElementById("search").value.toLowerCase();
+
+            const filtered = employees.filter(function (emp) {
+
+                return String(emp.id).toLowerCase().includes(value) ||
+                    String(emp.name).toLowerCase().includes(value);
+
+            });
+
+            displayEmployees(filtered);
+        }
+
+
+        // Load data when page opens
+        loadEmployees();
+
+    </script>
+
+</body>
+
+</html>

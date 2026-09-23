@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Employee</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #e0f2ff, #f8eaff);
+            padding: 40px;
+        }
+
+        .box {
+            max-width: 550px;
+            margin: auto;
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px #bbb;
+        }
+
+        h1 {
+            text-align: center;
+            color: #6c3cff;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            margin: 8px 0 15px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+        }
+
+        button {
+            padding: 12px 20px;
+            border: 0;
+            border-radius: 20px;
+            background: #6c3cff;
+            color: white;
+            cursor: pointer;
+            margin-right: 8px;
+        }
+
+        #msg {
+            text-align: center;
+            font-weight: bold;
+            margin-top: 15px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="box">
+
+        <h1>✏️ Edit Employee</h1>
+
+        <input id="id" placeholder="Enter Employee ID">
+
+        <input id="name" placeholder="Employee Name">
+
+        <input id="email" placeholder="Email">
+
+        <input id="phone" placeholder="Phone">
+
+        <input id="department" placeholder="Department">
+
+        <input id="salary" placeholder="Salary">
+
+        <button onclick="updateEmployee()">Update Employee</button>
+
+        <button onclick="location.href='home.html'">Back</button>
+
+        <p id="msg"></p>
+
+    </div>
+
+    <script>
+
+        function updateEmployee() {
+
+            let employees =
+                JSON.parse(localStorage.getItem("employees")) || [];
+
+            let id = document.getElementById("id").value.trim();
+
+            let index = employees.findIndex(emp => emp.id === id);
+
+            if (index === -1) {
+                document.getElementById("msg").style.color = "red";
+                document.getElementById("msg").innerText =
+                    "Employee ID not found!";
+                return;
+            }
+
+            employees[index].name =
+                document.getElementById("name").value;
+
+            employees[index].email =
+                document.getElementById("email").value;
+
+            employees[index].phone =
+                document.getElementById("phone").value;
+
+            employees[index].department =
+                document.getElementById("department").value;
+
+            employees[index].salary =
+                document.getElementById("salary").value;
+
+            localStorage.setItem("employees", JSON.stringify(employees));
+
+            document.getElementById("msg").style.color = "green";
+            document.getElementById("msg").innerText =
+                "Employee updated successfully!";
+        }
+
+    </script>
+
+</body>
+
+</html>
